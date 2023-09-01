@@ -1,0 +1,67 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ZMM_PO_GOODS_MVT_SEND_MAIL</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S33 {
+color: #4DA619;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+.L0S70 {
+color: #808080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S31">*&amp;&nbsp;Report&nbsp;ZMM_PO_GOODS_MVT_SEND_MAIL</span><br>
+<span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S31">*&amp;</span><br>
+<span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S52">REPORT&nbsp;</span>zmm_po_goods_mvt_send_mail<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">&quot;&nbsp;Top</span><br>
+<span class="L0S52">INCLUDE&nbsp;</span>zmm_po_goods_mvt_send_mail_top<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">&quot;&nbsp;Ecran&nbsp;de&nbsp;sélection</span><br>
+<span class="L0S52">SELECTION-SCREEN&nbsp;</span><span class="L0S52">BEGIN&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">BLOCK&nbsp;</span>b1&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">FRAME&nbsp;</span><span class="L0S52">TITLE&nbsp;</span><span class="L0S52">TEXT</span><span class="L0S70">-</span>t01<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">SELECT-OPTIONS</span><span class="L0S55">:&nbsp;</span>so_ebeln&nbsp;<span class="L0S52">FOR&nbsp;</span>ekko<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">SELECT-OPTIONS</span><span class="L0S55">:&nbsp;</span>so_datum&nbsp;<span class="L0S52">FOR&nbsp;</span>ekko<span class="L0S70">-</span>aedat<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PARAMETERS</span><span class="L0S55">:&nbsp;</span>p_test&nbsp;&nbsp;&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">CHECKBOX&nbsp;</span><span class="L0S52">DEFAULT&nbsp;</span><span class="L0S33">''</span><span class="L0S55">.</span><br>
+<span class="L0S52">SELECTION-SCREEN&nbsp;</span><span class="L0S52">END&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">BLOCK&nbsp;</span>b1<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">SELECTION-SCREEN&nbsp;</span><span class="L0S52">BEGIN&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">BLOCK&nbsp;</span>b2&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">FRAME&nbsp;</span><span class="L0S52">TITLE&nbsp;</span><span class="L0S52">TEXT</span><span class="L0S70">-</span>t02<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">PARAMETERS</span><span class="L0S55">:&nbsp;</span>p_new&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">RADIOBUTTON&nbsp;</span><span class="L0S52">GROUP&nbsp;</span>rad&nbsp;<span class="L0S52">DEFAULT&nbsp;</span><span class="L0S33">'X'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_receiv&nbsp;<span class="L0S52">RADIOBUTTON&nbsp;</span><span class="L0S52">GROUP&nbsp;</span>rad<span class="L0S55">.</span><br>
+<span class="L0S52">SELECTION-SCREEN&nbsp;</span><span class="L0S52">END&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">BLOCK&nbsp;</span>b2<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">INCLUDE&nbsp;</span>zmm_po_goods_mvt_send_mail_frm<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">START-OF-SELECTION</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>set_screen_params<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>send_mail&nbsp;<span class="L0S52">USING&nbsp;</span>gv_type&nbsp;p_test<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">END-OF-SELECTION</span><span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>display_alv<span class="L0S55">.</span></span>
+</body>

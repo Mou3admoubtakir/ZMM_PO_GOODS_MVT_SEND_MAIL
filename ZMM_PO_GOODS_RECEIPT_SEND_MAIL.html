@@ -1,0 +1,67 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>LZMM_MAILU04</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S52">FUNCTION&nbsp;</span>zmm_po_goods_receipt_send_mail<span class="L0S55">.</span><br>
+<span class="L0S31">*&quot;----------------------------------------------------------------------</span><br>
+<span class="L0S31">*&quot;*&quot;Interface&nbsp;locale&nbsp;:</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;IMPORTING</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IV_EBELN)&nbsp;TYPE&nbsp;&nbsp;EBELN&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IV_TYPE)&nbsp;TYPE&nbsp;&nbsp;CHAR1</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IV_TEST)&nbsp;TYPE&nbsp;&nbsp;XFELD&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IR_EBELN)&nbsp;TYPE&nbsp;&nbsp;RSELOPTION&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IR_DATUM)&nbsp;TYPE&nbsp;&nbsp;RSELOPTION&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IT_ME59)&nbsp;TYPE&nbsp;&nbsp;ME59_T_TODO&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IV_COMMIT)&nbsp;TYPE&nbsp;&nbsp;XFELD&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUE(IV_ME59N_FLAG)&nbsp;TYPE&nbsp;&nbsp;XFELD&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;TABLES</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ET_MAIL_RETURN&nbsp;STRUCTURE&nbsp;&nbsp;ZMM_MAIL_RETURN&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;----------------------------------------------------------------------</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span><span class="L0S52">refresh&nbsp;</span><span class="L0S52">USING&nbsp;</span>IV_ME59N_FLAG<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>set_global_po_params&nbsp;<span class="L0S52">USING&nbsp;</span>iv_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IV_ME59N_FLAG<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_datum<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IT_ME59<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_data<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>fill_po_mail_receiver<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>send_po_mail&nbsp;<span class="L0S52">using&nbsp;</span>iv_test<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>et_mail_return&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">REQUESTED</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span><span class="L0S52">LINES&nbsp;</span><span class="L0S52">OF&nbsp;</span>gt_alv&nbsp;<span class="L0S52">TO&nbsp;</span>et_mail_return<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_commit&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>iv_test&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">COMMIT&nbsp;</span><span class="L0S52">WORK&nbsp;</span><span class="L0S52">AND&nbsp;</span><span class="L0S52">WAIT</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFUNCTION</span><span class="L0S55">.</span></span>
+</body>
