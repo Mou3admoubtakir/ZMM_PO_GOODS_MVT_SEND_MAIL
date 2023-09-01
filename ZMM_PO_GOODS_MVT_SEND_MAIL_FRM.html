@@ -1,0 +1,130 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ZMM_PO_GOODS_MVT_SEND_MAIL_FRM</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S32 {
+color: #3399FF;
+}
+.L0S33 {
+color: #4DA619;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+.L0S70 {
+color: #808080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S31">*&amp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZMM_PO_GOODS_MVT_SEND_MAIL_FRM</span><br>
+<span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S52">FORM&nbsp;</span>set_screen_params<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>ls_range&nbsp;<span class="L0S52">TYPE&nbsp;</span>rsdsselopt<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>p_new&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ELSEIF&nbsp;</span>p_receiv&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>so_ebeln&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_ebeln<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">MOVE-CORRESPONDING&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>ls_range<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_range&nbsp;<span class="L0S52">TO&nbsp;</span>gr_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>so_datum&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_datum<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">MOVE-CORRESPONDING&nbsp;</span>ls_datum&nbsp;<span class="L0S52">TO&nbsp;</span>ls_range<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_range&nbsp;<span class="L0S52">TO&nbsp;</span>gr_datum<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>send_mail&nbsp;<span class="L0S52">USING&nbsp;</span>iv_type&nbsp;<span class="L0S52">TYPE&nbsp;</span>char1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_test&nbsp;<span class="L0S52">TYPE&nbsp;</span>xfeld<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'ZMM_PO_GOODS_RECEIPT_SEND_MAIL'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>iv_type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>iv_test<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_ebeln&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gr_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_datum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gr_datum<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_commit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'X'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;et_mail_return&nbsp;<span class="L0S55">=&nbsp;</span>gt_alv<span class="L0S55">.</span><br>
+<br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>display_alv<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>build_fieldcatalog<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>build_layout<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>list_display<span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>build_fieldcatalog<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>build_fcatalog&nbsp;<span class="L0S52">USING</span><span class="L0S55">:</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S33">'OBJECT_ID'&nbsp;</span><span class="L0S33">'GT_ALV'&nbsp;</span><span class="L0S33">'N°Commande'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S33">'ERNAM'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S33">'GT_ALV'&nbsp;</span><span class="L0S33">'Demandeur'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S33">'EMAIL'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S33">'GT_ALV'&nbsp;</span><span class="L0S33">'E-Mail'</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>build_fcatalog&nbsp;<span class="L0S52">USING&nbsp;</span>lv_field&nbsp;lv_tab&nbsp;lv_text<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>ls_fieldcat&nbsp;<span class="L0S52">TYPE&nbsp;</span>slis_fieldcat_alv<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;ls_fieldcat<span class="L0S70">-</span>fieldname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_field<span class="L0S55">.</span><br>
+&nbsp;&nbsp;ls_fieldcat<span class="L0S70">-</span>tabname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_tab<span class="L0S55">.</span><br>
+&nbsp;&nbsp;ls_fieldcat<span class="L0S70">-</span>seltext_m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_text<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_fieldcat&nbsp;<span class="L0S52">TO&nbsp;</span>gt_fieldcat<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>ls_fieldcat<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;&nbsp;build_fieldcatlog</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>build_layout<span class="L0S55">.</span><br>
+&nbsp;&nbsp;gs_layout<span class="L0S70">-</span>colwidth_optimize&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'X'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;gs_layout<span class="L0S70">-</span>zebra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'X'</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>list_display&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lv_program&nbsp;<span class="L0S52">TYPE&nbsp;</span>sy<span class="L0S70">-</span>repid<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;lv_program&nbsp;<span class="L0S55">=&nbsp;</span>sy<span class="L0S70">-</span>repid<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'REUSE_ALV_GRID_DISPLAY'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_callback_program&nbsp;<span class="L0S55">=&nbsp;</span>lv_program<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_layout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gs_layout<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_fieldcat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gt_fieldcat<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_outtab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gt_alv<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXCEPTIONS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;program_error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">2</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;&lt;&gt;&nbsp;<span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">MESSAGE&nbsp;</span><span class="L0S52">ID&nbsp;</span>sy<span class="L0S70">-</span>msgid&nbsp;<span class="L0S52">TYPE&nbsp;</span>sy<span class="L0S70">-</span>msgty&nbsp;<span class="L0S52">NUMBER&nbsp;</span>sy<span class="L0S70">-</span>msgno<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WITH&nbsp;</span>sy<span class="L0S70">-</span>msgv1&nbsp;sy<span class="L0S70">-</span>msgv2&nbsp;sy<span class="L0S70">-</span>msgv3&nbsp;sy<span class="L0S70">-</span>msgv4<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;&nbsp;list_display</span></span>
+</body>
