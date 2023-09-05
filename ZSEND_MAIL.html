@@ -1,0 +1,156 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>LZMM_POU01</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S32 {
+color: #3399FF;
+}
+.L0S33 {
+color: #4DA619;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+.L0S70 {
+color: #808080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S52">FUNCTION&nbsp;</span>z_send_mail<span class="L0S55">.</span><br>
+<span class="L0S31">*&quot;----------------------------------------------------------------------</span><br>
+<span class="L0S31">*&quot;*&quot;Interface&nbsp;locale&nbsp;:</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;IMPORTING</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_SENDER)&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;&nbsp;CL_SAPUSER_BCS</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_RECIPIENT)&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;&nbsp;IF_RECIPIENT_BCS</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_RECIPIENT_CC)&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;&nbsp;IF_RECIPIENT_BCS&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_TITLE)&nbsp;TYPE&nbsp;&nbsp;STRING</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_BODY)&nbsp;TYPE&nbsp;&nbsp;BCSY_TEXT</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_OTF)&nbsp;TYPE&nbsp;&nbsp;TT_ITCOO&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REFERENCE(I_DOCUMENT_NAME)&nbsp;TYPE&nbsp;&nbsp;SOOD-OBJDES&nbsp;OPTIONAL</span><br>
+<span class="L0S31">*&quot;----------------------------------------------------------------------</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA&nbsp;</span><span class="L0S55">:&nbsp;</span>lo_mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">REF&nbsp;</span><span class="L0S52">TO&nbsp;</span>cl_bcs<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lo_document&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">REF&nbsp;</span><span class="L0S52">TO&nbsp;</span>cl_document_bcs<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_send&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>os_boolean<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_bin_filesize&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>so_obj_len<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_bin_xstr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>xstring<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_binary_content&nbsp;<span class="L0S52">TYPE&nbsp;</span>solix_tab<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_pdf_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">STANDARD&nbsp;</span><span class="L0S52">TABLE&nbsp;</span><span class="L0S52">OF&nbsp;</span>tline<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S55">.</span><br>
+<br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;preapre&nbsp;attachement&nbsp;---------------------------------</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>i_otf&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL&nbsp;</span><span class="L0S55">.</span><br>
+<span class="L0S31">*Convert&nbsp;the&nbsp;OTF&nbsp;data&nbsp;to&nbsp;XSTRING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'CONVERT_OTF'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'PDF'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IMPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin_filesize&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_bin_filesize<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_bin_xstr<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>I_otf[]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>lt_pdf_tab[]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXCEPTIONS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err_max_linewidth&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err_format&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err_conv_not_possible&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">3</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">4</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;&lt;&gt;&nbsp;<span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">MESSAGE&nbsp;</span><span class="L0S52">ID&nbsp;</span>sy<span class="L0S70">-</span>msgid&nbsp;<span class="L0S52">TYPE&nbsp;</span>sy<span class="L0S70">-</span>msgty&nbsp;<span class="L0S52">NUMBER&nbsp;</span>sy<span class="L0S70">-</span>msgno<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WITH&nbsp;</span>sy<span class="L0S70">-</span>msgv1&nbsp;sy<span class="L0S70">-</span>msgv2&nbsp;sy<span class="L0S70">-</span>msgv3&nbsp;sy<span class="L0S70">-</span>msgv4<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S31">*Convert&nbsp;the&nbsp;XSTRING&nbsp;to&nbsp;a&nbsp;binary&nbsp;table</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'SCMS_XSTRING_TO_BINARY'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">buffer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>lv_bin_xstr<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binary_tab&nbsp;<span class="L0S55">=&nbsp;</span>lt_binary_content<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF&nbsp;</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------&nbsp;create&nbsp;persistent&nbsp;send&nbsp;request&nbsp;------------------------</span><br>
+&nbsp;&nbsp;lo_mail&nbsp;<span class="L0S55">=&nbsp;</span>cl_bcs<span class="L0S70">=&gt;</span>create_persistent<span class="L0S55">(&nbsp;</span><span class="L0S55">)</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------&nbsp;create&nbsp;and&nbsp;set&nbsp;document&nbsp;-------------------------------</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;create&nbsp;document</span><br>
+&nbsp;&nbsp;lo_document&nbsp;<span class="L0S55">=&nbsp;</span>cl_document_bcs<span class="L0S70">=&gt;</span>create_document<span class="L0S55">(</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_type&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'RAW'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_type&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'HTM'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_text&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>i_body<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_subject&nbsp;=&nbsp;i_title&nbsp;).</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_subject&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">''&nbsp;</span><span class="L0S55">)</span><span class="L0S55">.</span><br>
+<br>
+<br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;document&nbsp;to&nbsp;send&nbsp;request</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;add&nbsp;attachement&nbsp;to&nbsp;document&nbsp;--------------------------</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>i_otf&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_document<span class="L0S70">-&gt;</span>add_attachment<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_attachment_type&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'PDF'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_attachment_size&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_bin_filesize<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_attachment_subject&nbsp;<span class="L0S55">=&nbsp;</span>i_document_name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_att_content_hex&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lt_binary_content<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;document&nbsp;to&nbsp;send&nbsp;request</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>set_document<span class="L0S55">(&nbsp;</span>lo_document&nbsp;<span class="L0S55">)</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;set&nbsp;sender&nbsp;-------------------------------------------</span><br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>set_sender<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_sender&nbsp;<span class="L0S55">=&nbsp;</span>i_sender<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;add&nbsp;recipient&nbsp;(e-mail&nbsp;address)&nbsp;-----------------------</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;recipient&nbsp;with&nbsp;its&nbsp;respective&nbsp;attributes&nbsp;to&nbsp;send&nbsp;request</span><br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>add_recipient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_recipient&nbsp;<span class="L0S55">=&nbsp;</span>i_recipient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_express&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'X'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>i_recipient_cc&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.&nbsp;</span><span class="L0S31">&quot;&nbsp;CC</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>add_recipient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_recipient&nbsp;<span class="L0S55">=&nbsp;</span>i_recipient_cc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>sppf_true<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S31">&quot;Pour&nbsp;avoir&nbsp;plus&nbsp;de&nbsp;50&nbsp;caractères&nbsp;dans&nbsp;l'objet</span><br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>set_message_subject<span class="L0S55">(</span><br>
+&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ip_subject&nbsp;<span class="L0S55">=&nbsp;</span>i_title&nbsp;<span class="L0S55">)</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------&nbsp;send&nbsp;document&nbsp;---------------------------------------</span><br>
+&nbsp;&nbsp;<span class="L0S52">TRY</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">METHOD&nbsp;</span>lo_mail<span class="L0S70">-&gt;</span>send<span class="L0S55">(</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_with_error_screen&nbsp;=&nbsp;'X'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RECEIVING<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;<span class="L0S55">=&nbsp;</span>lv_send<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CATCH&nbsp;</span>cx_send_req_bcs<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_send&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">''</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDTRY</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sent_to_all&nbsp;=&nbsp;'X'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;TEXT-003.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;COMMIT&nbsp;WORK&nbsp;AND&nbsp;WAIT.</span><br>
+<br>
+<span class="L0S52">ENDFUNCTION</span><span class="L0S55">.</span></span>
+</body>
