@@ -1,0 +1,430 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>LZMM_MAILF03</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S32 {
+color: #3399FF;
+}
+.L0S33 {
+color: #4DA619;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+.L0S70 {
+color: #808080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S31">*&amp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LZMM_MAILF03</span><br>
+<span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_data<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Select&nbsp;PR&nbsp;Data</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_new<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_for_attachement&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;PR&nbsp;creator&nbsp;email</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_vendor_user_email<span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Select&nbsp;PR&nbsp;Data</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_data_not_received<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;PR&nbsp;creator&nbsp;email</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_user_email<span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;PO&nbsp;total&nbsp;price</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_total_price<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;link</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_fiori_link<span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_new<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>ls_po&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_po&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>gt_me59_po[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_me59_po&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_me59<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>ls_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_me59<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po<span class="L0S70">-</span>lifnr&nbsp;<span class="L0S55">=&nbsp;</span>ls_me59<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po<span class="L0S70">-</span>bsart&nbsp;<span class="L0S55">=&nbsp;</span>ls_me59<span class="L0S70">-</span>bsart&nbsp;<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_po&nbsp;<span class="L0S52">TO&nbsp;</span>gt_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_data_not_received<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;Goods&nbsp;mvt&nbsp;not&nbsp;completed</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_mseg<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Get&nbsp;PO&nbsp;from&nbsp;goods&nbsp;mvt</span><br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>select_po_from_mseg<span class="L0S55">.</span><br>
+<br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_data_from_pr_release<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_me59&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>p<span class="L0S70">~</span>ebeln&nbsp;p<span class="L0S70">~</span>txz01&nbsp;p<span class="L0S70">~</span>netpr&nbsp;p<span class="L0S70">~</span>banfn<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INTO&nbsp;</span>CORRESPONDING&nbsp;<span class="L0S52">FIELDS&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_from_pr_release<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>ekpo&nbsp;<span class="L0S52">AS&nbsp;</span>p<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FOR&nbsp;</span><span class="L0S52">ALL&nbsp;</span>ENTRIES&nbsp;<span class="L0S52">IN&nbsp;</span>gt_me59<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>p<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>gt_me59<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_mail_receiver<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_po&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>usr21<span class="L0S70">~</span>bname&nbsp;adr6<span class="L0S70">~</span>smtp_addr&nbsp;<span class="L0S52">AS&nbsp;</span>email&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>usr21<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>adr6&nbsp;<span class="L0S52">ON&nbsp;</span>usr21<span class="L0S70">~</span>addrnumber&nbsp;<span class="L0S55">=&nbsp;</span>adr6<span class="L0S70">~</span>addrnumber<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>usr21<span class="L0S70">~</span>persnumber&nbsp;<span class="L0S55">=&nbsp;</span>adr6<span class="L0S70">~</span>persnumber<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FOR&nbsp;</span><span class="L0S52">ALL&nbsp;</span>ENTRIES&nbsp;<span class="L0S52">IN&nbsp;</span>gt_po<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>bname&nbsp;<span class="L0S55">=&nbsp;</span>gt_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">WAIT&nbsp;</span><span class="L0S52">UP&nbsp;</span><span class="L0S52">TO&nbsp;</span><span class="L0S32">2&nbsp;</span>SECONDS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gr_ebeln[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>h<span class="L0S70">~</span>ebeln<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>ebelp&nbsp;<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>txz01<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn<span class="L0S55">,&nbsp;</span>pr<span class="L0S70">~</span>ernam<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>bedat<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>netwr<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>waers<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>lifnr<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>bsart<span class="L0S55">,&nbsp;</span>pr<span class="L0S70">~</span>ekgrp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>ekko&nbsp;<span class="L0S52">AS&nbsp;</span>h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>ekpo&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">i&nbsp;</span><span class="L0S52">ON&nbsp;</span>h<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>eban&nbsp;<span class="L0S52">AS&nbsp;</span>pr&nbsp;<span class="L0S52">ON&nbsp;</span>pr<span class="L0S70">~</span>banfn&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>pr<span class="L0S70">~</span>bnfpo&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>bnfpo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>h<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S52">IN&nbsp;</span>@gr_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>h<span class="L0S70">~</span>aedat&nbsp;<span class="L0S52">IN&nbsp;</span>@gr_datum<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>@gt_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_from_mseg<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">***&nbsp;Début&nbsp;de&nbsp;modification&nbsp;RBISSON&nbsp;09.01.2023</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lr_bsart&nbsp;<span class="L0S52">TYPE&nbsp;</span>RANGE&nbsp;<span class="L0S52">OF&nbsp;</span>bsart<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_bsart&nbsp;<span class="L0S52">LIKE&nbsp;</span><span class="L0S52">LINE&nbsp;</span><span class="L0S52">OF&nbsp;</span>lr_bsart<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CLEAR</span><span class="L0S55">:&nbsp;</span>ls_bsart<span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;ls_bsart-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;16.01.2023&nbsp;-&nbsp;Modification&nbsp;to&nbsp;exclude&nbsp;values</span><br>
+&nbsp;&nbsp;ls_bsart<span class="L0S70">-</span><span class="L0S52">sign&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'E'</span><span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;16.01.2023&nbsp;-&nbsp;Modification&nbsp;to&nbsp;exclude&nbsp;values</span><br>
+<span class="L0S31">*&nbsp;&nbsp;ls_bsart-option&nbsp;=&nbsp;'NE'.&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;16.01.2023&nbsp;-&nbsp;Modification&nbsp;to&nbsp;exclude&nbsp;values</span><br>
+&nbsp;&nbsp;ls_bsart<span class="L0S70">-</span>option&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'EQ'</span><span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;16.01.2023&nbsp;-&nbsp;Modification&nbsp;to&nbsp;exclude&nbsp;values</span><br>
+&nbsp;&nbsp;ls_bsart<span class="L0S70">-</span>low&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ZPX'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_bsart&nbsp;<span class="L0S52">TO&nbsp;</span>lr_bsart<span class="L0S55">.</span><br>
+&nbsp;&nbsp;ls_bsart<span class="L0S70">-</span>low&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ZARC'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_bsart&nbsp;<span class="L0S52">TO&nbsp;</span>lr_bsart<span class="L0S55">.</span><br>
+<span class="L0S31">***&nbsp;Fin&nbsp;de&nbsp;modification&nbsp;RBISSON&nbsp;09.01.2023</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">WAIT&nbsp;</span><span class="L0S52">UP&nbsp;</span><span class="L0S52">TO&nbsp;</span><span class="L0S32">2&nbsp;</span>SECONDS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_mseg[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>h<span class="L0S70">~</span>ebeln<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>bsart&nbsp;<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>ebelp<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>txz01<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn<span class="L0S55">,&nbsp;</span>pr<span class="L0S70">~</span>ernam<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>bedat<span class="L0S55">,&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>netwr<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>waers<span class="L0S55">,&nbsp;</span>h<span class="L0S70">~</span>lifnr<span class="L0S55">,&nbsp;</span>pr<span class="L0S70">~</span>ekgrp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>ekko&nbsp;<span class="L0S52">AS&nbsp;</span>h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>ekpo&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">i&nbsp;</span><span class="L0S52">ON&nbsp;</span>h<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>eban&nbsp;<span class="L0S52">AS&nbsp;</span>pr&nbsp;<span class="L0S52">ON&nbsp;</span>pr<span class="L0S70">~</span>banfn&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>pr<span class="L0S70">~</span>bnfpo&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>bnfpo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FOR&nbsp;</span><span class="L0S52">ALL&nbsp;</span>ENTRIES&nbsp;<span class="L0S52">IN&nbsp;</span>@gt_mseg<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>h<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>@gt_mseg<span class="L0S70">-</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>ebelp&nbsp;<span class="L0S55">=&nbsp;</span>@gt_mseg<span class="L0S70">-</span>ebelp<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;h~bsart&nbsp;NE&nbsp;'ZPX'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;09.01.2023</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>h<span class="L0S70">~</span>bsart&nbsp;<span class="L0S52">IN&nbsp;</span>@lr_bsart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;++RBISSON&nbsp;09.01.2023</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>banfn&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span><span class="L0S52">i</span><span class="L0S70">~</span>loekz&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;16.01.2023&nbsp;-&nbsp;Ne&nbsp;pas&nbsp;sélectionner&nbsp;les&nbsp;postes&nbsp;supprimés</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INTO&nbsp;</span>CORRESPONDING&nbsp;<span class="L0S52">FIELDS&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>@gt_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_mseg<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;RBISSON&nbsp;26.01.2023&nbsp;-&nbsp;La&nbsp;somme&nbsp;sur&nbsp;la&nbsp;quantité&nbsp;du&nbsp;poste&nbsp;double&nbsp;parfois&nbsp;le&nbsp;montant</span><br>
+&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;quand&nbsp;entré&nbsp;de&nbsp;marchandise&nbsp;à&nbsp;0&nbsp;pour&nbsp;cocher&nbsp;cohe&nbsp;livraison&nbsp;finale</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>h<span class="L0S70">~</span>ebeln<span class="L0S55">,&nbsp;</span>e<span class="L0S70">~</span>ebelp<span class="L0S55">,</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;SUM(&nbsp;e~menge&nbsp;)&nbsp;AS&nbsp;qty,&nbsp;&quot;--RBISSON&nbsp;26.01.2023</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;e<span class="L0S70">~</span>menge&nbsp;<span class="L0S52">AS&nbsp;</span>qty<span class="L0S55">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;26.01.2023</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SUM</span><span class="L0S55">(</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CASE&nbsp;</span><span class="L0S52">WHEN&nbsp;</span><span class="L0S52">m</span><span class="L0S70">~</span>bwart&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'101'&nbsp;</span>THEN&nbsp;<span class="L0S52">m</span><span class="L0S70">~</span>erfmg<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S52">m</span><span class="L0S70">~</span>bwart&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'102'&nbsp;</span>THEN&nbsp;<span class="L0S55">(&nbsp;</span><span class="L0S70">-</span><span class="L0S32">1&nbsp;</span>*&nbsp;<span class="L0S52">m</span><span class="L0S70">~</span>erfmg&nbsp;<span class="L0S55">)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE&nbsp;</span><span class="L0S32">0</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">END</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">)&nbsp;</span><span class="L0S52">AS&nbsp;</span>received_qty<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>ekko&nbsp;<span class="L0S52">AS&nbsp;</span>h<br>
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>ekpo&nbsp;<span class="L0S52">AS&nbsp;</span>e&nbsp;<span class="L0S52">ON&nbsp;</span>e<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>h<span class="L0S70">~</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LEFT&nbsp;</span><span class="L0S52">JOIN&nbsp;</span>mseg&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">m&nbsp;&nbsp;</span><span class="L0S52">ON&nbsp;</span><span class="L0S52">m</span><span class="L0S70">~</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>e<span class="L0S70">~</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span><span class="L0S52">m</span><span class="L0S70">~</span>ebelp&nbsp;<span class="L0S55">=&nbsp;</span>e<span class="L0S70">~</span>ebelp<br>
+&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>e<span class="L0S70">~</span>banfn&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>h<span class="L0S70">~</span>ebeln&nbsp;<span class="L0S52">IN&nbsp;</span>@gr_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>h<span class="L0S70">~</span>aedat&nbsp;<span class="L0S52">IN&nbsp;</span>@gr_datum<br>
+<span class="L0S31">*&nbsp;&nbsp;GROUP&nbsp;BY&nbsp;h~ebeln,&nbsp;e~ebelp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;26.01.2023</span><br>
+&nbsp;&nbsp;<span class="L0S52">GROUP&nbsp;</span><span class="L0S52">BY&nbsp;</span>h<span class="L0S70">~</span>ebeln<span class="L0S55">,&nbsp;</span>e<span class="L0S70">~</span>ebelp<span class="L0S55">,&nbsp;</span>e<span class="L0S70">~</span>menge&nbsp;&nbsp;<span class="L0S31">&quot;++RBISSON&nbsp;26.01.2023</span><br>
+&nbsp;&nbsp;HAVING&nbsp;<span class="L0S52">SUM</span><span class="L0S55">(</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CASE&nbsp;</span><span class="L0S52">WHEN&nbsp;</span>bwart&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'101'&nbsp;</span>THEN&nbsp;erfmg<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span>bwart&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'102'&nbsp;</span>THEN&nbsp;<span class="L0S55">(&nbsp;</span><span class="L0S70">-</span><span class="L0S32">1&nbsp;</span>*&nbsp;erfmg&nbsp;<span class="L0S55">)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE&nbsp;</span><span class="L0S32">0</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">END</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;&lt;&gt;&nbsp;SUM(&nbsp;e~menge&nbsp;)&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;26.01.2023</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">)&nbsp;</span>&lt;&gt;&nbsp;e<span class="L0S70">~</span>menge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;++RBISSON&nbsp;26.01.2023</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>@gt_mseg<span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_po_user_email<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_po&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>usr21<span class="L0S70">~</span>bname&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">id&nbsp;</span>adr6<span class="L0S70">~</span>smtp_addr&nbsp;<span class="L0S52">AS&nbsp;</span>email&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>usr21<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>adr6&nbsp;<span class="L0S52">ON&nbsp;</span>usr21<span class="L0S70">~</span>addrnumber&nbsp;<span class="L0S55">=&nbsp;</span>adr6<span class="L0S70">~</span>addrnumber<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>usr21<span class="L0S70">~</span>persnumber&nbsp;<span class="L0S55">=&nbsp;</span>adr6<span class="L0S70">~</span>persnumber<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FOR&nbsp;</span><span class="L0S52">ALL&nbsp;</span>ENTRIES&nbsp;<span class="L0S52">IN&nbsp;</span>gt_po<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>bname&nbsp;<span class="L0S55">=&nbsp;</span>gt_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>select_vendor_user_email<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_po&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>lfa1<span class="L0S70">~</span>lifnr&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">id&nbsp;</span>adr6<span class="L0S70">~</span>smtp_addr&nbsp;<span class="L0S52">AS&nbsp;</span>email&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>lfa1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;<span class="L0S52">JOIN&nbsp;</span>adr6&nbsp;<span class="L0S52">ON&nbsp;</span>lfa1<span class="L0S70">~</span>adrnr&nbsp;<span class="L0S55">=&nbsp;</span>adr6<span class="L0S70">~</span>addrnumber<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FOR&nbsp;</span><span class="L0S52">ALL&nbsp;</span>ENTRIES&nbsp;<span class="L0S52">IN&nbsp;</span>gt_po<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>lifnr&nbsp;<span class="L0S55">=&nbsp;</span>gt_po<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<span class="L0S52">FORM&nbsp;</span>select_po_for_attachement&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">TABLES&nbsp;</span><span class="L0S55">:&nbsp;</span>nast<span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;messages</span><br>
+&nbsp;&nbsp;<span class="L0S52">CONSTANTS&nbsp;</span><span class="L0S55">:&nbsp;</span>bustype<span class="L0S55">(</span><span class="L0S32">10</span><span class="L0S55">)&nbsp;</span><span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c&nbsp;</span><span class="L0S52">VALUE&nbsp;</span><span class="L0S33">'BUS2012'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ef<span class="L0S55">(</span><span class="L0S32">2</span><span class="L0S55">)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c&nbsp;</span><span class="L0S52">VALUE&nbsp;</span><span class="L0S33">'EF'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Langue<span class="L0S55">(</span><span class="L0S32">1</span><span class="L0S55">)&nbsp;&nbsp;&nbsp;</span><span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c&nbsp;</span><span class="L0S52">VALUE&nbsp;</span><span class="L0S33">'F'</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tcode<span class="L0S55">(</span><span class="L0S32">5</span><span class="L0S55">)&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c&nbsp;</span><span class="L0S52">VALUE&nbsp;</span><span class="L0S33">'ME23N'</span><span class="L0S55">.</span><br>
+<span class="L0S31">*type&nbsp;declaration&nbsp;for&nbsp;messages</span><br>
+&nbsp;&nbsp;<span class="L0S52">TYPES&nbsp;</span><span class="L0S55">:&nbsp;</span><span class="L0S52">BEGIN&nbsp;</span><span class="L0S52">OF&nbsp;</span>ty_nast<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INCLUDE&nbsp;</span><span class="L0S52">STRUCTURE&nbsp;</span>nast<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">TYPES&nbsp;</span><span class="L0S55">:&nbsp;</span><span class="L0S52">END&nbsp;</span><span class="L0S52">OF&nbsp;</span>ty_nast<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA&nbsp;</span><span class="L0S55">:&nbsp;</span>it_nast&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;&nbsp;</span>nast<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;<span class="L0S52">TYPE&nbsp;</span>sna_kschl<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_otf&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">TABLE&nbsp;</span><span class="L0S52">OF&nbsp;</span>itcoo<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_doc&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>meein_purchase_doc_print<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA&nbsp;</span><span class="L0S55">:&nbsp;</span>u_screen<span class="L0S55">(</span><span class="L0S32">1</span><span class="L0S55">)&nbsp;&nbsp;&nbsp;</span><span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u_return_code&nbsp;<span class="L0S52">TYPE&nbsp;</span>sy<span class="L0S70">-</span>subrc<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>v_druvo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LIKE&nbsp;</span>t166k<span class="L0S70">-</span>druvo<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_from_memory&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_toa_dara&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>toa_dara<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_arc_params&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>arc_params<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_fonam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>tdform<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lx_dunning_item&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">c</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ex_retco&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">i</span><span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;f_sto<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lr_ebeln&nbsp;<span class="L0S52">TYPE&nbsp;</span>RANGE&nbsp;<span class="L0S52">OF&nbsp;</span>ebeln<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln&nbsp;<span class="L0S52">LIKE&nbsp;</span><span class="L0S52">LINE&nbsp;</span><span class="L0S52">OF&nbsp;</span>lr_ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>u_return_code&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>nast<span class="L0S70">-</span>aende&nbsp;<span class="L0S52">EQ&nbsp;</span>space<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;v_druvo&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'1'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;v_druvo&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'2'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_po&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_po<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONTINUE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span><span class="L0S52">sign&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'I'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>option&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'EQ'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>lr_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CASE&nbsp;</span>ls_po<span class="L0S70">-</span>bsart&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S33">'ZPX'&nbsp;</span><span class="L0S52">OR&nbsp;</span><span class="L0S33">'ZPX2'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ZCPX'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S33">'ZARB'&nbsp;</span><span class="L0S52">OR&nbsp;</span><span class="L0S33">'ZARC'&nbsp;</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;=&nbsp;'ZQNP'&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&quot;--RBISSON&nbsp;12.10.2022&nbsp;#42400&nbsp;-&nbsp;Modification&nbsp;for&nbsp;PDF&nbsp;PO&nbsp;not&nbsp;correct&nbsp;one</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ZCPP'&nbsp;</span><span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;12.10.2022&nbsp;#42400&nbsp;-&nbsp;Modification&nbsp;for&nbsp;PDF&nbsp;PO&nbsp;not&nbsp;correct&nbsp;one</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S33">'ZB'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ZQNE'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S52">OTHERS&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_kschl&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'NEU'&nbsp;</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDCASE&nbsp;</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">WAIT&nbsp;</span><span class="L0S52">UP&nbsp;</span><span class="L0S52">TO&nbsp;</span><span class="L0S32">5&nbsp;</span>SECONDS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span><span class="L0S52">SINGLE&nbsp;</span>fonam&nbsp;<span class="L0S52">FROM&nbsp;</span>tnapr&nbsp;<span class="L0S52">INTO&nbsp;</span>lv_fonam&nbsp;<span class="L0S52">WHERE&nbsp;&nbsp;</span>kschl&nbsp;<span class="L0S52">EQ&nbsp;</span>lv_kschl&nbsp;<span class="L0S52">AND&nbsp;</span>nacha&nbsp;<span class="L0S52">EQ&nbsp;</span><span class="L0S33">'5'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span><span class="L0S52">SINGLE&nbsp;</span>*&nbsp;<span class="L0S52">FROM&nbsp;</span>nast&nbsp;<span class="L0S52">WHERE&nbsp;</span>objky&nbsp;<span class="L0S55">=&nbsp;</span>@ls_po<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S52">INTO&nbsp;</span>@nast&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>nast&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;nast<span class="L0S70">-</span>objky&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;nast<span class="L0S70">-</span>kappl&nbsp;<span class="L0S55">=&nbsp;</span>ef&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;nast<span class="L0S70">-</span>spras&nbsp;<span class="L0S55">=&nbsp;</span>langue&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;nast<span class="L0S70">-</span>objtype&nbsp;<span class="L0S55">=&nbsp;</span>bustype&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;nast<span class="L0S70">-</span>parnr&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>lifnr&nbsp;<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF&nbsp;</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">WAIT&nbsp;</span><span class="L0S52">UP&nbsp;</span><span class="L0S52">TO&nbsp;</span><span class="L0S32">5&nbsp;</span>SECONDS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;nast<span class="L0S70">-</span>tcode&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'ME23N'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;nast<span class="L0S70">-</span>nacha&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'8'&nbsp;</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;nast<span class="L0S70">-</span>sort1&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'SWP'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;nast<span class="L0S70">-</span>ldest&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'LOCL'</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;nast-dimme&nbsp;=&nbsp;'X'.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'ME_READ_PO_FOR_PRINTING'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_nast&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>nast<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_screen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>u_screen<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IMPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_retco&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>u_return_code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_nast&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>it_nast<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>it_doc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CHANGING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cx_druvo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>v_druvo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cx_from_memory&nbsp;<span class="L0S55">=&nbsp;</span>v_from_memory<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">CHECK&nbsp;</span>u_return_code&nbsp;<span class="L0S52">EQ&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'ME_PRINT_PO'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_nast&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>it_nast<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_druvo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>v_druvo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>it_doc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_fonam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_fonam<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_screen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>u_screen<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_from_memory&nbsp;<span class="L0S55">=&nbsp;</span>V_from_memory<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_toa_dara&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>ls_toa_dara<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_arc_params&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>ls_arc_params<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;HW&nbsp;214570</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ix_sto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>f_sto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;670912</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IMPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex_retco&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>ex_retco<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'READ_OTF_FROM_MEMORY'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory_key&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>nast<span class="L0S70">-</span>objky<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lt_otf<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXCEPTIONS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory_empty&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">2</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">CHECK&nbsp;</span>lt_otf[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">MOVE-CORRESPONDING&nbsp;</span>lt_otf&nbsp;<span class="L0S52">TO&nbsp;</span>gv_otf&nbsp;<span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<span class="L0S52">FORM&nbsp;</span>select_po_total_price<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lr_ebeln&nbsp;<span class="L0S52">TYPE&nbsp;</span>RANGE&nbsp;<span class="L0S52">OF&nbsp;</span>ebeln<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln&nbsp;<span class="L0S52">LIKE&nbsp;</span><span class="L0S52">LINE&nbsp;</span><span class="L0S52">OF&nbsp;</span>lr_ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_po&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_po<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONTINUE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span><span class="L0S52">sign&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'I'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>option&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'EQ'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>lr_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lr_ebeln&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SELECT&nbsp;</span>ebeln<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SUM</span><span class="L0S55">(&nbsp;</span>netwr&nbsp;<span class="L0S55">)&nbsp;</span><span class="L0S52">AS&nbsp;</span>price<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">FROM&nbsp;</span>ekpo&nbsp;<span class="L0S52">AS&nbsp;</span><span class="L0S52">i</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHERE&nbsp;</span>ebeln&nbsp;<span class="L0S52">IN&nbsp;</span>@lr_ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">AND&nbsp;</span>loekz&nbsp;<span class="L0S52">NE&nbsp;</span><span class="L0S33">'X'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">GROUP&nbsp;</span><span class="L0S52">BY&nbsp;</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ORDER&nbsp;</span><span class="L0S52">BY&nbsp;</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>@gt_po_h<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S52">NE&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>get_po_total_price_from_pr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>get_po_total_price_from_pr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_po&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_po_h&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po_h<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_pr_h&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_eban_h<span class="L0S55">,</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_me59&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>me59_s_todo<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_item&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>me59_s_item<span class="L0S55">,</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lr_range&nbsp;<span class="L0S52">TYPE&nbsp;</span>rseloption<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_range&nbsp;<span class="L0S52">LIKE&nbsp;</span><span class="L0S52">LINE&nbsp;</span><span class="L0S52">OF&nbsp;</span>lr_range<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_me59_po&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_me59<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>ls_me59<span class="L0S70">-</span>items&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_item<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_range<span class="L0S70">-</span><span class="L0S52">sign&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'I'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_range<span class="L0S70">-</span>option&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'EQ'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_range<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_item<span class="L0S70">-</span>banfn<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_range&nbsp;<span class="L0S52">TO&nbsp;</span>lr_range<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>get_pr_total_price&nbsp;<span class="L0S52">USING&nbsp;</span>lr_range<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_me59_po&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_me59<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>ls_po_h<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>ls_me59<span class="L0S70">-</span>items&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_item&nbsp;<span class="L0S52">INDEX&nbsp;</span><span class="L0S32">1</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CHECK&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_pr_h&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_pr_h&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>prnum&nbsp;<span class="L0S55">=&nbsp;</span>ls_item<span class="L0S70">-</span>banfn<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CHECK&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_po_h<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_me59<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_po_h<span class="L0S70">-</span>price&nbsp;<span class="L0S55">=&nbsp;</span>ls_pr_h<span class="L0S70">-</span>price<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_po_h&nbsp;<span class="L0S52">TO&nbsp;</span>gt_po_h<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span></span>
+</body>

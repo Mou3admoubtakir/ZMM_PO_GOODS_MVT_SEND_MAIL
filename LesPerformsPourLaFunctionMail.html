@@ -1,0 +1,561 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>LZMM_MAILF04</title>
+<meta name="GENERATOR" content="AB4Editor Control" />
+<style type="text/css">
+SPAN {
+font-family: "Courier New";
+font-size: 10pt;
+color: #000000;
+background: #FFFFFF;
+}
+.L0S20 {
+font-style: italic;
+color: #7B7BC0;
+}
+.L0S31 {
+font-style: italic;
+color: #808080;
+}
+.L0S32 {
+color: #3399FF;
+}
+.L0S33 {
+color: #4DA619;
+}
+.L0S52 {
+color: #0000FF;
+}
+.L0S55 {
+color: #800080;
+}
+.L0S70 {
+color: #808080;
+}
+</style>
+</head>
+<body>
+<span><span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S31">*&amp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LZMM_MAILF04</span><br>
+<span class="L0S31">*&amp;---------------------------------------------------------------------*</span><br>
+<span class="L0S52">FORM&nbsp;</span>set_global_po_params&nbsp;<span class="L0S52">USING&nbsp;</span>iv_ebeln&nbsp;<span class="L0S52">TYPE&nbsp;</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_type&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>char1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iv_me59n&nbsp;<span class="L0S52">TYPE&nbsp;</span>xfeld<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_ebeln&nbsp;<span class="L0S52">TYPE&nbsp;</span>rseloption<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ir_date&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>rseloption<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_me59&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>me59_t_todo<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">LIKE&nbsp;</span><span class="L0S52">LINE&nbsp;</span><span class="L0S52">OF&nbsp;</span>gr_ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OR&nbsp;</span>iv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gv_type&nbsp;<span class="L0S55">=&nbsp;</span>iv_type<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_ebeln&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span><span class="L0S52">sign&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'I'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>option&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'EQ'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S55">=&nbsp;</span>iv_ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>gr_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_me59n&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gr_ebeln_done[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gr_ebeln[]&nbsp;<span class="L0S55">=&nbsp;</span>ir_ebeln[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gr_ebeln_done[]&nbsp;<span class="L0S55">=&nbsp;</span>ir_ebeln[]<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>ir_ebeln&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gr_ebeln_done&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>low&nbsp;<span class="L0S55">=&nbsp;</span>ls_ebeln<span class="L0S70">-</span>low&nbsp;<span class="L0S52">TRANSPORTING&nbsp;</span><span class="L0S52">NO&nbsp;</span><span class="L0S52">FIELDS</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S52">NE&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>gr_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_ebeln&nbsp;<span class="L0S52">TO&nbsp;</span>gr_ebeln_done<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gr_ebeln[]&nbsp;<span class="L0S55">=&nbsp;</span>ir_ebeln[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gr_ebeln_done[]&nbsp;<span class="L0S55">=&nbsp;</span>ir_ebeln[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;gr_datum[]&nbsp;<span class="L0S55">=&nbsp;</span>ir_date[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>it_me59[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_me59n&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gt_me59_po_done[]&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_me59_po[]&nbsp;<span class="L0S55">=&nbsp;</span>it_me59[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_me59_po_done[]&nbsp;<span class="L0S55">=&nbsp;</span>it_me59[]<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>it_me59&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_me59<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_me59_done&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_me59<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S52">TRANSPORTING&nbsp;</span><span class="L0S52">NO&nbsp;</span><span class="L0S52">FIELDS</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S52">NE&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_me59&nbsp;<span class="L0S52">TO&nbsp;</span>gt_me59_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_me59&nbsp;<span class="L0S52">TO&nbsp;</span>gt_me59_po_done<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_me59_po[]&nbsp;<span class="L0S55">=&nbsp;</span>it_me59[]<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_me59_po_done[]&nbsp;<span class="L0S55">=&nbsp;</span>it_me59[]<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<span class="L0S52">FORM&nbsp;</span>fill_po_mail_receiver<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>ls_po_receiver&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po_receiver<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_usr_email&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_usr_email<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_exist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>xfeld<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_tabix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>sytabix<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>p&nbsp;LENGTH&nbsp;<span class="L0S32">15&nbsp;</span><span class="L0S52">DECIMALS&nbsp;</span><span class="L0S32">2</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">SORT&nbsp;</span>gt_po&nbsp;<span class="L0S52">BY&nbsp;</span>ebeln&nbsp;ebelp<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_po&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_po<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>ls_po_receiver<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>lv_exist<span class="L0S55">.</span><span class="L0S31">&quot;MMOUBTAKIR&nbsp;(+)&nbsp;correction&nbsp;bug&nbsp;#50053&nbsp;-&nbsp;FIORI&nbsp;notification&nbsp;de&nbsp;rappel</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_receiver&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_po_receiver&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ernam&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_tabix&nbsp;<span class="L0S55">=&nbsp;</span>sy<span class="L0S70">-</span>tabix<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_exist&nbsp;<span class="L0S55">=&nbsp;</span>abap_true<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>txz01&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>txz01<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>ernam&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>lifnr&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>ekgrp&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ekgrp<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_mseg&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_mseg<span class="L0S55">)&nbsp;</span><span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebelp&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ebelp<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_qty&nbsp;<span class="L0S55">=&nbsp;</span>ls_mseg<span class="L0S70">-</span>qty&nbsp;<span class="L0S70">-&nbsp;</span>ls_mseg<span class="L0S70">-</span>received_qty<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ADD&nbsp;</span>lv_qty&nbsp;<span class="L0S52">TO&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>qty<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Cas&nbsp;poste&nbsp;multiple</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lv_exist&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Check&nbsp;demandeur&nbsp;multiple</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_po<span class="L0S70">-</span>ernam&nbsp;<span class="L0S52">NE&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Ajout&nbsp;nouveau&nbsp;destinataire</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>txz01&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>txz01<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>ernam&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>lifnr&nbsp;<span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_usr_email&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span><span class="L0S52">id&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSEIF&nbsp;</span>gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_usr_email&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span><span class="L0S52">id&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONTINUE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>email&nbsp;<span class="L0S55">=&nbsp;</span>ls_usr_email<span class="L0S70">-</span>email<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_po_receiver&nbsp;<span class="L0S52">TO&nbsp;</span>gt_po_receiver<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Pas&nbsp;de&nbsp;demandeur&nbsp;multiple</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">MODIFY&nbsp;</span>gt_po_receiver&nbsp;<span class="L0S52">FROM&nbsp;</span>ls_po_receiver&nbsp;<span class="L0S52">INDEX&nbsp;</span>lv_tabix<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_usr_email&nbsp;INTO&nbsp;ls_usr_email&nbsp;WITH&nbsp;KEY&nbsp;id&nbsp;=&nbsp;ls_po-ernam.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_usr_email&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span><span class="L0S52">id&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSEIF&nbsp;</span>gv_type&nbsp;<span class="L0S55">=&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_usr_email&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_usr_email&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span><span class="L0S52">id&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_po<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONTINUE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>email&nbsp;<span class="L0S55">=&nbsp;</span>ls_usr_email<span class="L0S70">-</span>email<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_po_receiver&nbsp;<span class="L0S52">TO&nbsp;</span>gt_po_receiver<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>send_po_mail&nbsp;<span class="L0S52">USING&nbsp;</span>iv_test&nbsp;<span class="L0S52">TYPE&nbsp;</span>xfeld<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lo_recipient&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">REF&nbsp;</span><span class="L0S52">TO&nbsp;</span>if_recipient_bcs<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lo_recipient_cc&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">REF&nbsp;</span><span class="L0S52">TO&nbsp;</span>if_recipient_bcs<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lo_sender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">REF&nbsp;</span><span class="L0S52">TO&nbsp;</span>cl_sapuser_bcs<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lt_body_mail&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>bcsy_text<span class="L0S55">,</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_alv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>zmm_mail_return<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>gt_po_receiver&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_po_receiver<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REFRESH</span><span class="L0S55">:&nbsp;</span>lt_body_mail<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR</span><span class="L0S55">:&nbsp;</span>lv_title<span class="L0S55">,&nbsp;</span>ls_alv<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>email&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S31">&quot;&nbsp;Check&nbsp;mail&nbsp;for&nbsp;PR&nbsp;number&nbsp;is&nbsp;not&nbsp;already&nbsp;sent&nbsp;to&nbsp;validator</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_alv&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_alv&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>object_id&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ebeln<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validator&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONTINUE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S31">*</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>iv_test&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lo_recipient&nbsp;<span class="L0S55">=&nbsp;</span>cl_cam_address_bcs<span class="L0S70">=&gt;</span>create_internet_address<span class="L0S55">(</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_receiver<span class="L0S70">-</span>email&nbsp;<span class="L0S55">)</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ernam&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TRY</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lo_recipient_cc&nbsp;<span class="L0S55">=&nbsp;</span>cl_cam_address_bcs<span class="L0S70">=&gt;</span>create_user_home_address<span class="L0S55">(</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ernam<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_commtype&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'INT'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;11.10.2022&nbsp;Ajout&nbsp;pour&nbsp;récupération&nbsp;adresse&nbsp;mail&nbsp;demandeur&nbsp;en&nbsp;CC&nbsp;mail</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CATCH&nbsp;</span>cx_address_bcs<span class="L0S55">.&nbsp;</span><span class="L0S31">&quot;&nbsp;BCS:&nbsp;Address&nbsp;Exceptions(</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDTRY</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lo_sender&nbsp;<span class="L0S55">=&nbsp;</span>cl_sapuser_bcs<span class="L0S70">=&gt;</span><span class="L0S52">create</span><span class="L0S55">(&nbsp;</span><span class="L0S33">'INSTALL'&nbsp;</span><span class="L0S55">)</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>build_mail_po_title&nbsp;<span class="L0S52">USING&nbsp;</span>ls_po_receiver<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CHANGING&nbsp;</span>lv_title<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">PERFORM&nbsp;</span>build_mail_po_body&nbsp;<span class="L0S52">TABLES&nbsp;</span>lt_body_mail<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">USING&nbsp;</span>ls_po_receiver<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;ls_po_receiver-ekgrp&nbsp;=&nbsp;'CMX'.</span><br>
+<span class="L0S31">**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Si&nbsp;le&nbsp;prix&nbsp;est&nbsp;inférieur&nbsp;à&nbsp;50000&nbsp;on&nbsp;envoie&nbsp;pas&nbsp;de&nbsp;mail</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<br>
+<span class="L0S20">&quot;$.&nbsp;Region&nbsp;(--)&nbsp;MTAL&nbsp;-&nbsp;12.12.2022</span><br>
+<span class="L0S31">*&nbsp;Vu&nbsp;avec&nbsp;Julien&nbsp;R.&nbsp;et&nbsp;Maud&nbsp;R.&nbsp;:&nbsp;Cette&nbsp;RG&nbsp;n'a&nbsp;pas&nbsp;de&nbsp;raison&nbsp;d'être</span><br>
+<span class="L0S31">*&nbsp;(&nbsp;validé&nbsp;par&nbsp;le&nbsp;client&nbsp;)</span><br>
+<br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;ls_po_receiver-ekgrp.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CMX'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'RZM'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;1500.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'RQU'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;1500.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'QRM'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'QAC'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'DRH'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIQ'.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_po_price&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gv_po_price&nbsp;LT&nbsp;50000.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.</span><br>
+<br>
+<span class="L0S20">&quot;$.&nbsp;Endregion&nbsp;(--)&nbsp;MTAL&nbsp;-&nbsp;12.12.2022</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONCATENATE&nbsp;</span><span class="L0S33">'BDC&nbsp;N'&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ebeln&nbsp;<span class="L0S52">INTO&nbsp;</span>gv_docname<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'Z_SEND_MAIL'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_sender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lo_sender<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_recipient&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lo_recipient<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_recipient_cc&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lo_recipient_cc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_title<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lt_body_mail<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_otf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>gv_otf<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_document_name&nbsp;<span class="L0S55">=&nbsp;</span>gv_docname<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span><span class="L0S52">message&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'OK'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span><span class="L0S52">message&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'No&nbsp;mail&nbsp;found'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span>object_id&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span>ernam&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>ernam<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span>vendor&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>lifnr<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;ls_alv<span class="L0S70">-</span>email&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_receiver<span class="L0S70">-</span>email<span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;ls_alv-MESSAGE&nbsp;=&nbsp;ls_po_receiver-MESSAGE.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>ls_alv&nbsp;<span class="L0S52">TO&nbsp;</span>gt_alv<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>build_mail_po_title&nbsp;<span class="L0S52">USING&nbsp;</span>is_po&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po_receiver<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CHANGING&nbsp;</span>cv_title&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lt_lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">TABLE&nbsp;</span><span class="L0S52">OF&nbsp;</span>tline<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>thead<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po_h<span class="L0S55">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;11.10.2022</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_ebeln_shifted&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>tdobname<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>char15<span class="L0S55">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;11.10.2022</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CLEAR</span><span class="L0S55">:&nbsp;</span>gv_po_price<span class="L0S55">.&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;09.01.2023</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CASE&nbsp;</span>gv_type<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;<span class="L0S55">=&nbsp;</span>gc_title_text<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_ebeln_shifted&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SHIFT&nbsp;</span>lv_ebeln_shifted&nbsp;<span class="L0S52">LEFT&nbsp;</span>DELETING&nbsp;<span class="L0S52">LEADING&nbsp;</span><span class="L0S33">'0'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_text&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>txz01<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">***&nbsp;Début&nbsp;d'ajout&nbsp;RBISSON&nbsp;11.10.2022&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_h&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_po_h&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_price&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_h<span class="L0S70">-</span>price<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S31">***&nbsp;Fin&nbsp;d'ajout&nbsp;RBISSON&nbsp;11.10.2022&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+<br>
+<span class="L0S31">*</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;lv_ebeln_shifted&nbsp;&nbsp;gv_po_text&nbsp;'('&nbsp;gv_po_price&nbsp;'€)'&nbsp;INTO&nbsp;gv_url&nbsp;SEPARATED&nbsp;BY&nbsp;space.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_url&nbsp;<span class="L0S55">=&nbsp;</span>lv_ebeln_shifted<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;<span class="L0S55">=&nbsp;</span>gc_title_text<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">***&nbsp;Début&nbsp;d'ajout&nbsp;RBISSON&nbsp;09.01.2023&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_h&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_po_h&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_price&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_h<span class="L0S70">-</span>price<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S31">***&nbsp;Fin&nbsp;d'ajout&nbsp;RBISSON&nbsp;09.01.2023&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S52">OTHERS</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXIT</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDCASE</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'READ_TEXT'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'ST'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">language&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>sy<span class="L0S70">-</span>langu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'TEXT'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IMPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">header&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_head<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>lt_lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXCEPTIONS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">language&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">3</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_found&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">4</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">5</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">6</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrong_access_to_archive&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">7</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">8</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;&lt;&gt;&nbsp;<span class="L0S32">0</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;Implement&nbsp;suitable&nbsp;error&nbsp;handling&nbsp;here</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;lv_ebeln_shifted&nbsp;<span class="L0S55">=&nbsp;</span>gv_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">SHIFT&nbsp;</span>lv_ebeln_shifted&nbsp;<span class="L0S52">LEFT&nbsp;</span>DELETING&nbsp;<span class="L0S52">LEADING&nbsp;</span><span class="L0S33">'0'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lt_lines&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>lt_lines&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_line<span class="L0S55">)&nbsp;</span><span class="L0S52">INDEX&nbsp;</span><span class="L0S32">1</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_title&nbsp;<span class="L0S55">=&nbsp;</span>ls_line<span class="L0S70">-</span>tdline<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_url&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>cv_title&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_url<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_pr_text&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>cv_title&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_po_text<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S31">***&nbsp;Début&nbsp;d'ajout&nbsp;RBISSON&nbsp;11.10.2022&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_po_price&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL&nbsp;</span><span class="L0S52">aND&nbsp;</span>cv_title&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WRITE&nbsp;&nbsp;</span>gv_po_price&nbsp;<span class="L0S52">TO&nbsp;</span>lv_price&nbsp;<span class="L0S52">CURRENCY&nbsp;</span><span class="L0S33">'2'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONDENSE&nbsp;</span>lv_price&nbsp;<span class="L0S52">NO</span><span class="L0S70">-</span>GAPS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONCATENATE&nbsp;</span>cv_title&nbsp;<span class="L0S33">'&nbsp;('</span>lv_price<span class="L0S33">'€)'&nbsp;</span><span class="L0S52">INTO&nbsp;</span>cv_title<span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<span class="L0S31">***&nbsp;Fin&nbsp;d'ajout&nbsp;RBISSON&nbsp;11.10.2022&nbsp;-&nbsp;Ajout&nbsp;du&nbsp;prix&nbsp;dans&nbsp;le&nbsp;titre&nbsp;dans&nbsp;l'email</span><br>
+<br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span><br>
+<br>
+<span class="L0S52">FORM&nbsp;</span>build_mail_po_body&nbsp;<span class="L0S52">TABLES&nbsp;</span>et_body&nbsp;&nbsp;&nbsp;<span class="L0S52">STRUCTURE&nbsp;</span>soli<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">USING&nbsp;</span>is_po&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>ty_po_receiver<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">DATA</span><span class="L0S55">:&nbsp;</span>lt_lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">TABLE&nbsp;</span><span class="L0S52">OF&nbsp;</span>tline<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_str_lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span><span class="L0S52">TABLE&nbsp;</span><span class="L0S52">OF&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>thead<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po_h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po_h<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_po&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>ty_po<span class="L0S55">,</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_count&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>int4<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_body_mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>soli<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>tdobname<span class="L0S55">,</span><br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_link&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>char15<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_convNet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>bapicurr<span class="L0S70">-</span>bapicurr<span class="L0S55">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_bfconv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TYPE&nbsp;</span>bapicurr<span class="L0S70">-</span>bapicurr<span class="L0S55">,</span><br>
+<span class="L0S31">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_banfn_shifted&nbsp;TYPE&nbsp;string,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_ebeln_shifted&nbsp;<span class="L0S52">TYPE&nbsp;</span>string<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CLEAR</span><span class="L0S55">:&nbsp;</span>gv_po_price<span class="L0S55">.&nbsp;</span><span class="L0S31">&quot;++RBISSON&nbsp;09.01.2023</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CASE&nbsp;</span>gv_type<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span>gc_type<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;<span class="L0S55">=&nbsp;</span>gc_body_text<span class="L0S70">-</span>new_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_text&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>txz01<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_h&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_po_h&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_price&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_h<span class="L0S70">-</span>price<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_link&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">''</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lv_link&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_ebeln&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>lv_link&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span>gc_type<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_name&nbsp;<span class="L0S55">=&nbsp;</span>gc_body_text<span class="L0S70">-</span>to_receive_po<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_text&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>txz01<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">READ&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>gt_po_h&nbsp;<span class="L0S52">INTO&nbsp;</span>ls_po_h&nbsp;<span class="L0S52">WITH&nbsp;</span><span class="L0S52">KEY&nbsp;</span>ebeln&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">0</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_po_price&nbsp;<span class="L0S55">=&nbsp;</span>ls_po_h<span class="L0S70">-</span>price<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_qty&nbsp;<span class="L0S55">=&nbsp;</span>is_po<span class="L0S70">-</span>qty<span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_link&nbsp;<span class="L0S55">=&nbsp;</span>gv_baseurl&nbsp;&amp;&amp;&nbsp;gc_url<span class="L0S70">-</span>display_po<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_ebeln&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>lv_link&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_ebeln<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WHEN&nbsp;</span><span class="L0S52">OTHERS</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXIT</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDCASE</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'READ_TEXT'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S33">'ST'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">language&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>sy<span class="L0S70">-</span>langu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span>lv_name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'TEXT'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IMPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">header&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>ls_head<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">lines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span>lt_lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXCEPTIONS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">language&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">3</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_found&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">4</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">5</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">6</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrong_access_to_archive&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S32">7</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="L0S55">=&nbsp;</span><span class="L0S32">8</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>sy<span class="L0S70">-</span>subrc&nbsp;&lt;&gt;&nbsp;<span class="L0S32">0</span><span class="L0S55">.</span><br>
+<span class="L0S31">*&nbsp;Implement&nbsp;suitable&nbsp;error&nbsp;handling&nbsp;here</span><br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lt_lines&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">DESCRIBE&nbsp;</span><span class="L0S52">TABLE&nbsp;</span>lt_lines&nbsp;<span class="L0S52">LINES&nbsp;</span>lv_count<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_ebeln_shifted&nbsp;<span class="L0S55">=&nbsp;</span>gv_ebeln<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">SHIFT&nbsp;</span>lv_ebeln_shifted&nbsp;<span class="L0S52">LEFT&nbsp;</span>DELETING&nbsp;<span class="L0S52">LEADING&nbsp;</span><span class="L0S33">'0'</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CLEAR&nbsp;</span>lv_text<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_text&nbsp;<span class="L0S55">=&nbsp;</span>lv_ebeln_shifted<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_po_text&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONCATENATE&nbsp;</span>lv_text&nbsp;gv_po_text&nbsp;<span class="L0S52">INTO&nbsp;</span>lv_text&nbsp;<span class="L0S52">SEPARATED&nbsp;</span><span class="L0S52">BY&nbsp;</span>space<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>gv_po_price&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">WRITE&nbsp;&nbsp;</span>gv_po_price&nbsp;<span class="L0S52">TO&nbsp;</span>lv_price&nbsp;<span class="L0S52">CURRENCY&nbsp;</span><span class="L0S33">'2'&nbsp;</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONDENSE&nbsp;</span>lv_price&nbsp;<span class="L0S52">NO</span><span class="L0S70">-</span>GAPS<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONCATENATE&nbsp;</span>lv_text&nbsp;<span class="L0S33">'&nbsp;('</span>lv_price<span class="L0S33">'€)'&nbsp;</span><span class="L0S52">INTO&nbsp;</span>lv_text<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lv_link&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CONCATENATE&nbsp;</span><span class="L0S33">`&nbsp;&lt;a&nbsp;href=&quot;`&nbsp;</span>lv_link&nbsp;<span class="L0S33">`&quot;&gt;`&nbsp;</span>lv_text&nbsp;<span class="L0S33">'&lt;/a&gt;'&nbsp;</span><span class="L0S52">INTO&nbsp;</span>gv_url&nbsp;<span class="L0S52">SEPARATED&nbsp;</span><span class="L0S52">BY&nbsp;</span>space<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_url&nbsp;<span class="L0S55">=&nbsp;</span>lv_text<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_body_mail&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'&lt;html&gt;&lt;body&gt;'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>lv_body_mail&nbsp;<span class="L0S52">TO&nbsp;</span>et_body<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">LOOP&nbsp;</span><span class="L0S52">AT&nbsp;</span>lt_lines&nbsp;<span class="L0S52">INTO&nbsp;</span><span class="L0S52">DATA</span><span class="L0S55">(</span>ls_lines<span class="L0S55">)</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;<span class="L0S55">=&nbsp;</span>ls_lines<span class="L0S70">-</span>tdline<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_url&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>lv_str&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_url<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">REPLACE&nbsp;</span><span class="L0S52">ALL&nbsp;</span><span class="L0S52">OCCURRENCES&nbsp;</span><span class="L0S52">OF&nbsp;</span><span class="L0S33">'&amp;gv_qty&amp;'&nbsp;</span><span class="L0S52">IN&nbsp;</span>lv_str&nbsp;<span class="L0S52">WITH&nbsp;</span>gv_qty<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>lv_str&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_lines<span class="L0S70">-</span>tdformat&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'&lt;br/&gt;'&nbsp;</span>&amp;&amp;&nbsp;lv_str<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">`&nbsp;`&nbsp;</span>&amp;&amp;&nbsp;lv_str<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">CALL&nbsp;</span><span class="L0S52">FUNCTION&nbsp;</span><span class="L0S33">'SO_STRING_TO_TAB'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">EXPORTING</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content_str&nbsp;<span class="L0S55">=&nbsp;</span>lv_str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">TABLES</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content_tab&nbsp;<span class="L0S55">=&nbsp;</span>et_body<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">IF&nbsp;</span>ls_lines<span class="L0S70">-</span>tdformat&nbsp;<span class="L0S52">IS&nbsp;</span><span class="L0S52">NOT&nbsp;</span><span class="L0S52">INITIAL</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'&lt;br/&gt;'&nbsp;</span>&amp;&amp;&nbsp;lv_str<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ELSE</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_str&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">`&nbsp;`&nbsp;</span>&amp;&amp;&nbsp;lv_str<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_body_mail&nbsp;<span class="L0S55">=&nbsp;</span>lv_str<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>lv_body_mail&nbsp;<span class="L0S52">TO&nbsp;</span>et_body<span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">ENDLOOP</span><span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lv_body_mail&nbsp;<span class="L0S55">=&nbsp;</span><span class="L0S33">'&lt;/body&gt;&lt;/html&gt;'</span><span class="L0S55">.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="L0S52">APPEND&nbsp;</span>lv_body_mail&nbsp;<span class="L0S52">TO&nbsp;</span>et_body<span class="L0S55">.</span><br>
+<br>
+&nbsp;&nbsp;<span class="L0S52">ENDIF</span><span class="L0S55">.</span><br>
+<br>
+<br>
+<span class="L0S52">ENDFORM</span><span class="L0S55">.</span></span>
+</body>
